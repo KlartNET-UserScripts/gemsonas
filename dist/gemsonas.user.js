@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name		Gemsonas
 // @description	Gemsonas
-// @version		2026.08.15.014246
+// @version		2026.08.15.014727
 // @match		https://gemini.google.com/*
 // @match		https://chatgpt.com/*
 // @updateURL	https://github.com/KlartNET-UserScripts/gemsonas/raw/refs/heads/main/dist/gemsonas.user.js
@@ -16,8 +16,7 @@
   var RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main/personas`;
   var COMMANDS = {
     "/pt": "ponytail.txt",
-    "/ptl": "ponytail_lite.txt",
-    "/gptjb": "jailbreak_gpt.txt"
+    "/ptl": "ponytail_lite.txt"
   };
   var cache = /* @__PURE__ */ new Map();
   for (const [cmd, filename] of Object.entries(COMMANDS)) {
