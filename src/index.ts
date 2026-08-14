@@ -1,53 +1,58 @@
-// ==UserScript==
-// @name         Gemsonas
-// @namespace    https://gemini.google.com/
-// @version      1.0.0
-// @description  GitHub에서 실시간으로 프롬프트를 동기화하는 무지연 페르소나 슬래시 커맨드
-// @match        https://gemini.google.com/*
-// @grant        none
-// ==/UserScript==
+const REPO = "KlartNET-UserScripts/gemsonas";
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main/personas`;
 
-(() => {
-	const PERSONAS_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/gemsonas/main/personas/ponytail.txt";
-})();
+const COMMANDS = {
+	"/ponytail": "ponytail.txt",
+} as const;
 
-(() => {
-  // 본인의 깃허브 '유저명/저장소명'으로 변경하세요.
-  const REPO = "YOUR_USERNAME/gemsonas";
-  const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main/personas`;
+const cache = new Map<string, string>();
 
-  const COMMAND_MAP = {
-    "/ponytail": "ponytail.txt",
-  };
+for (const [cmd, filename] of Object.entries(COMMANDS)) {
+	fetch(`${RAW_BASE}/${filename}`)
+		.then(res => res.ok? res.text() : "")
+		.then(text => text && cache.set(cmd, text.trim()));
+}
 
-  const cache = new Map();
+function expandPersona(target: HTMLElement) {
+	const text = target.textContent?.trim() || "";
 
-  // 스크립트 실행 시 백그라운드 프리페치 (타이핑 시 0ms 즉각 반응)
-  for (const [cmd, filename] of Object.entries(COMMAND_MAP)) {
-    fetch(`${RAW_BASE}/${filename}`)
-      .then((res) => (res.ok ? res.text() : ""))
-      .then((text) => text && cache.set(cmd, text.trim()))
-      .catch(() => {});
-  }
+	for (const [cmd, persona] of cache.entries()) {
+		if (text.startsWith(cmd)) {
+			const query = text.slice(cmd.length).trim();
+			const content = query? `${query}\n\n${persona}` : persona;
 
-  document.addEventListener(
-    "input",
-    (e) => {
-      const target = e.target;
-      if (!target?.isContentEditable) return;
+			target.focus();
+			document.execCommand("selectAll", false);
+			document.execCommand("insertText", false, content);
 
-      const text = target.textContent?.trim();
-      if (!text || text[0] !== "/") return;
+			break;
+		}
+	}
+}
 
-      const replacement = cache.get(text);
-      if (replacement) {
-        requestAnimationFrame(() => {
-          target.focus();
-          document.execCommand("selectAll", false, null);
-          document.execCommand("insertText", false, replacement);
-        });
-      }
-    },
-    { passive: true }
-  );
-})();
+document.addEventListener(
+	"keydown",
+	(event: KeyboardEvent) => {
+		if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
+		const target = event.target as HTMLInputElement | null;
+
+		if (target?.isContentEditable) {
+			expandPersona(target);
+		}
+	},
+	{ capture: true }
+);
+
+document.addEventListener(
+	"pointerdown",
+	(event: MouseEvent) => {
+		const btn = (event.target as HTMLButtonElement)?.closest("button[aria-label*='메시지 보내기']");
+		if (!btn) return;
+
+		const target = document.querySelector<HTMLElement>('rich-textarea [contenteditable="true"], div[contenteditable="true"]');
+		if (target) {
+			expandPersona(target);
+		}
+	},
+	{ capture: true }
+);
