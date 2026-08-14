@@ -6,7 +6,9 @@ const REPO = "KlartNET-UserScripts/gemsonas";
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main/personas`;
 
 const COMMANDS = {
-	"/ponytail": "ponytail.txt",
+	"/pt": "ponytail.txt",
+	"/ptl": "ponytail_lite.txt",
+	"/gptjb": "jailbreak_gpt.txt",
 } as const;
 
 const cache = new Map<string, string>();
