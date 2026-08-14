@@ -5,7 +5,8 @@ const banner = `// ==UserScript==
 // @description	Gemsonas
 // @version		0.0.0
 // @match		https://gemini.google.com/*
-// @grant		none
+// @connect		raw.githubusercontent.com
+// @grant		GM_xmlhttpRequest
 // ==/UserScript==\n`;
 
 await esbuild.build({

@@ -1,3 +1,7 @@
+declare const GM: {
+	xmlHttpRequest(details: any): void;
+};
+
 const REPO = "KlartNET-UserScripts/gemsonas";
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main/personas`;
 
@@ -8,18 +12,24 @@ const COMMANDS = {
 const cache = new Map<string, string>();
 
 for (const [cmd, filename] of Object.entries(COMMANDS)) {
-	fetch(`${RAW_BASE}/${filename}`)
-		.then(res => res.ok? res.text() : "")
-		.then(text => text && cache.set(cmd, text.trim()));
+	GM.xmlHttpRequest({
+		method: "GET",
+		url: `${RAW_BASE}/${filename}`,
+		onload: (res: any) => {
+			if (res.status === 200 && res.responseText) {
+				cache.set(cmd, res.responseText.trim());
+			}
+		},
+	});
 }
 
-function expandPersona(target: HTMLElement) {
+function expandPersona(target: HTMLInputElement) {
 	const text = target.textContent?.trim() || "";
 
 	for (const [cmd, persona] of cache.entries()) {
 		if (text.startsWith(cmd)) {
 			const query = text.slice(cmd.length).trim();
-			const content = query? `${query}\n\n${persona}` : persona;
+			const content = query? `${persona}\n\n${query}` : persona;
 
 			target.focus();
 			document.execCommand("selectAll", false);
@@ -46,12 +56,14 @@ document.addEventListener(
 document.addEventListener(
 	"pointerdown",
 	(event: MouseEvent) => {
-		const btn = (event.target as HTMLButtonElement)?.closest("button[aria-label*='메시지 보내기']");
+		const eventTarget = event.target as HTMLElement | null;
+		const btn = eventTarget?.closest("button[aria-label*='메시지 보내기']") as HTMLButtonElement | null;
 		if (!btn) return;
 
-		const target = document.querySelector<HTMLElement>('rich-textarea [contenteditable="true"], div[contenteditable="true"]');
+		const target = document.querySelector<HTMLInputElement>("rich-textarea [contenteditable='true'], div[contenteditable='true']");
 		if (target) {
 			expandPersona(target);
+			btn.click();
 		}
 	},
 	{ capture: true }

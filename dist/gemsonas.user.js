@@ -3,7 +3,8 @@
 // @description	Gemsonas
 // @version		0.0.0
 // @match		https://gemini.google.com/*
-// @grant		none
+// @connect		raw.githubusercontent.com
+// @grant		GM_xmlhttpRequest
 // ==/UserScript==
 
 (() => {
@@ -15,16 +16,24 @@
   };
   var cache = /* @__PURE__ */ new Map();
   for (const [cmd, filename] of Object.entries(COMMANDS)) {
-    fetch(`${RAW_BASE}/${filename}`).then((res) => res.ok ? res.text() : "").then((text) => text && cache.set(cmd, text.trim()));
+    GM.xmlHttpRequest({
+      method: "GET",
+      url: `${RAW_BASE}/${filename}`,
+      onload: (res) => {
+        if (res.status === 200 && res.responseText) {
+          cache.set(cmd, res.responseText.trim());
+        }
+      }
+    });
   }
   function expandPersona(target) {
     const text = target.textContent?.trim() || "";
     for (const [cmd, persona] of cache.entries()) {
       if (text.startsWith(cmd)) {
         const query = text.slice(cmd.length).trim();
-        const content = query ? `${query}
+        const content = query ? `${persona}
 
-${persona}` : persona;
+${query}` : persona;
         target.focus();
         document.execCommand("selectAll", false);
         document.execCommand("insertText", false, content);
@@ -46,11 +55,13 @@ ${persona}` : persona;
   document.addEventListener(
     "pointerdown",
     (event) => {
-      const btn = event.target?.closest("button[aria-label*='\uBA54\uC2DC\uC9C0 \uBCF4\uB0B4\uAE30']");
+      const eventTarget = event.target;
+      const btn = eventTarget?.closest("button[aria-label*='\uBA54\uC2DC\uC9C0 \uBCF4\uB0B4\uAE30']");
       if (!btn) return;
-      const target = document.querySelector('rich-textarea [contenteditable="true"], div[contenteditable="true"]');
+      const target = document.querySelector("rich-textarea [contenteditable='true'], div[contenteditable='true']");
       if (target) {
         expandPersona(target);
+        btn.click();
       }
     },
     { capture: true }
