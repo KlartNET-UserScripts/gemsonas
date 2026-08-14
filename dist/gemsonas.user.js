@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name		Gemsonas
 // @description	Gemsonas
-// @version		2026.08.15.014727
+// @version		2026.08.15.015013
 // @match		https://gemini.google.com/*
 // @match		https://chatgpt.com/*
 // @updateURL	https://github.com/KlartNET-UserScripts/gemsonas/raw/refs/heads/main/dist/gemsonas.user.js
@@ -35,9 +35,9 @@
     for (const [cmd, persona] of cache.entries()) {
       if (text.startsWith(cmd)) {
         const query = text.slice(cmd.length).trim();
-        const content = query ? `${persona}
+        const content = query ? `${query}
 
-${query}` : persona;
+${persona}` : persona;
         target.focus();
         document.execCommand("selectAll", false);
         document.execCommand("insertText", false, content);

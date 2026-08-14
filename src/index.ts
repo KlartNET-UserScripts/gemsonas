@@ -30,7 +30,7 @@ function expandPersona(target: HTMLInputElement) {
 	for (const [cmd, persona] of cache.entries()) {
 		if (text.startsWith(cmd)) {
 			const query = text.slice(cmd.length).trim();
-			const content = query? `${persona}\n\n${query}` : persona;
+			const content = query? `${query}\n\n${persona}` : persona;
 
 			target.focus();
 			document.execCommand("selectAll", false);
