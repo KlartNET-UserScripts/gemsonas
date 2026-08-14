@@ -57,7 +57,7 @@ document.addEventListener(
 	"pointerdown",
 	(event: MouseEvent) => {
 		const eventTarget = event.target as HTMLElement | null;
-		const btn = eventTarget?.closest("button[aria-label*='메시지 보내기']") as HTMLButtonElement | null;
+		const btn = eventTarget?.closest("button[aria-label*='메시지 보내기'], button[aria-label='프롬프트 보내기']") as HTMLButtonElement | null;
 		if (!btn) return;
 
 		const target = document.querySelector<HTMLInputElement>("rich-textarea [contenteditable='true'], div[contenteditable='true']");

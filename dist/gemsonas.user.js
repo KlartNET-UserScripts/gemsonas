@@ -58,7 +58,7 @@ ${query}` : persona;
     "pointerdown",
     (event) => {
       const eventTarget = event.target;
-      const btn = eventTarget?.closest("button[aria-label*='\uBA54\uC2DC\uC9C0 \uBCF4\uB0B4\uAE30']");
+      const btn = eventTarget?.closest("button[aria-label*='\uBA54\uC2DC\uC9C0 \uBCF4\uB0B4\uAE30'], button[aria-label='\uD504\uB86C\uD504\uD2B8 \uBCF4\uB0B4\uAE30']");
       if (!btn) return;
       const target = document.querySelector("rich-textarea [contenteditable='true'], div[contenteditable='true']");
       if (target) {
