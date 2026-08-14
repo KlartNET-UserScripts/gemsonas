@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name		Gemsonas
 // @description	Gemsonas
-// @version		2026.08.15.015013
+// @version		2026.08.15.015111
 // @match		https://gemini.google.com/*
 // @match		https://chatgpt.com/*
 // @updateURL	https://github.com/KlartNET-UserScripts/gemsonas/raw/refs/heads/main/dist/gemsonas.user.js
