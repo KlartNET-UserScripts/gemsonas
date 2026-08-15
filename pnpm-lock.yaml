@@ -11,6 +11,10 @@ importers:
       esbuild:
         specifier: ^0.28.2
         version: 0.28.2
+    devDependencies:
+      '@types/tampermonkey':
+        specifier: ^5.0.5
+        version: 5.0.5
 
 packages:
 
@@ -170,6 +174,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@types/tampermonkey@5.0.5':
+    resolution: {integrity: sha512-ZWitwJH4T/jcQiynhc3I5DNiwlsDzVTKPXg6A8ltTw3SDuf0b00bNRSV0Z/yldnhhBi9e8g8vY/X3LVSQcaCKQ==}
+
   esbuild@0.28.2:
     resolution: {integrity: sha512-HKVLS8dvII+xoKW9kmqxbRKrnWEXfJJr/FZhhJmiqIB0e053QNYFqOBouTMO/k5sID4MvCiUCvv8b9M4h32wIA==}
     engines: {node: '>=18'}
@@ -254,6 +261,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.2':
     optional: true
+
+  '@types/tampermonkey@5.0.5': {}
 
   esbuild@0.28.2:
     optionalDependencies:

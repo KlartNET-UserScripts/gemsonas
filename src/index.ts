@@ -1,7 +1,3 @@
-declare const GM: {
-	xmlHttpRequest(details: any): void;
-};
-
 const REPO = "KlartNET-UserScripts/gemsonas";
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main/personas`;
 
