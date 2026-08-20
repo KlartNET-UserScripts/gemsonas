@@ -1,15 +1,14 @@
 // ==UserScript==
 // @name		Gemsonas
 // @description	Gemsonas
-// @version		2026.08.15.015111
+// @version		2026.08.20.160812
 // @match		https://gemini.google.com/*
 // @match		https://chatgpt.com/*
-// @updateURL	https://github.com/KlartNET-UserScripts/gemsonas/raw/refs/heads/main/dist/gemsonas.user.js
-// @downloadURL	https://github.com/KlartNET-UserScripts/gemsonas/raw/refs/heads/main/dist/gemsonas.user.js
 // @connect		raw.githubusercontent.com
 // @grant		GM_xmlhttpRequest
 // ==/UserScript==
 
+"use strict";
 (() => {
   // src/index.ts
   var REPO = "KlartNET-UserScripts/gemsonas";
@@ -32,8 +31,9 @@
   }
   function expandPersona(target) {
     const text = target.textContent?.trim() || "";
+    const splits = text.split(" ");
     for (const [cmd, persona] of cache.entries()) {
-      if (text.startsWith(cmd)) {
+      if (splits[0] === cmd) {
         const query = text.slice(cmd.length).trim();
         const content = query ? `${query}
 

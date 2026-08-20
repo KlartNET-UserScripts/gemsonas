@@ -22,9 +22,10 @@ for (const [cmd, filename] of Object.entries(COMMANDS)) {
 
 function expandPersona(target: HTMLInputElement) {
 	const text = target.textContent?.trim() || "";
+	const splits = text.split(" ");
 
 	for (const [cmd, persona] of cache.entries()) {
-		if (text.startsWith(cmd)) {
+		if (splits[0] === cmd) {
 			const query = text.slice(cmd.length).trim();
 			const content = query? `${query}\n\n${persona}` : persona;
 

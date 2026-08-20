@@ -3,9 +3,8 @@
 		"module": "ESNext",
 		"target": "ESNext",
 		"strict": true,
-		"esModuleInterop": true,
 		"types": [
-			"tampermonkey",
+			"@types/tampermonkey",
 		],
 	},
 	"include": [
